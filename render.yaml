@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mundonow-hub-template
+    runtime: static
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

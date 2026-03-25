@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MundoNow — Hub Section Front Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       CSS VARIABLES — swap these per-hub to theme the page
+       World Cup:  --accent: #009B4D; --accent-light: #e6f5ed;
+       Elections:  --accent: #1A56DB; --accent-light: #EEF2FF;
+    ============================================================ */
+    :root {
+      --accent: #D4242A;           /* Theme color — change per hub */
+      --accent-light: #FEF2F2;     /* Light tint of accent */
+      --accent-dark: #9B0E13;
+      --bg: #F7F7F8;
+      --surface: #FFFFFF;
+      --border: #E5E7EB;
+      --text-primary: #111827;
+      --text-secondary: #6B7280;
+      --text-muted: #9CA3AF;
+      --header-bg: #0F1117;
+      --ticker-bg: #1a1d27;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.1);
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --max-w: 1200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font-family: var(--font-body); }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
+
+    /* ===================== HEADER ===================== */
+    .site-header {
+      background: var(--header-bg);
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--accent);
+    }
+    .site-header__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 16px;
+    }
+    .site-logo {
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      letter-spacing: -.3px;
+      flex-shrink: 0;
+    }
+    .site-logo span { color: var(--accent); }
+    .header-divider {
+      width: 1px; height: 24px; background: rgba(255,255,255,.15); flex-shrink: 0;
+    }
+    .hub-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(255,255,255,.85);
+      letter-spacing: .3px;
+      text-transform: uppercase;
+    }
+    .header-spacer { flex: 1; }
+    .lang-toggle {
+      display: flex;
+      gap: 2px;
+      background: rgba(255,255,255,.1);
+      border-radius: 6px;
+      padding: 3px;
+    }
+    .lang-toggle button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.6);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+      transition: all .15s;
+    }
+    .lang-toggle button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .header-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: rgba(255,255,255,.5);
+      font-size: 13px;
+      width: 180px;
+    }
+    .header-search svg { opacity: .5; flex-shrink: 0; }
+
+    /* ===================== TICKER ===================== */
+    .ticker-bar {
+      background: var(--ticker-bg);
+      padding: 0 20px;
+      overflow: hidden;
+    }
+    .ticker-bar__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 38px;
+      gap: 0;
+    }
+    .ticker-label {
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 0 12px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-right: 16px;
+    }
+    .ticker-scroll {
+      overflow: hidden;
+      flex: 1;
+    }
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      animation: ticker-move 28s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,.85);
+      font-size: 13px;
+      padding-right: 40px;
+    }
+    .ticker-item .score {
+      font-weight: 700;
+      color: #fff;
+    }
+    .ticker-item .status {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .ticker-item .status.live { color: #4ADE80; }
+    .ticker-item .status.final { color: var(--text-muted); }
+    .ticker-sep {
+      color: rgba(255,255,255,.2);
+      padding-right: 40px;
+    }
+    @keyframes ticker-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===================== ZIP BANNER ===================== */
+    .zip-banner {
+      background: var(--accent-light);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 13.5px;
+      position: relative;
+    }
+    .zip-banner__text {
+      color: var(--text-secondary);
+    }
+    .zip-banner__text strong { color: var(--text-primary); }
+    .zip-input-group {
+      display: flex;
+      gap: 0;
+    }
+    .zip-input {
+      border: 1.5px solid var(--border);
+      border-right: none;
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      width: 110px;
+      background: #fff;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .zip-input:focus { border-color: var(--accent); }
+    .zip-input::placeholder { color: var(--text-muted); }
+    .zip-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .zip-btn:hover { background: var(--accent-dark); }
+    .zip-dismiss {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      padding: 4px;
+    }
+
+    /* ===================== HERO ===================== */
+    .hub-hero {
+      background: var(--header-bg);
+      padding: 40px 20px 36px;
+      color: #fff;
+    }
+    .hub-hero__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+    .hub-hero__eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .hub-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .hub-hero__subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,.6);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+    }
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .hero-stat__num {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .hero-stat__label {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255,255,255,.5);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .hero-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      min-width: 260px;
+    }
+    .hero-card__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .next-event__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .next-event__meta {
+      font-size: 13px;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 14px;
+    }
+    .countdown {
+      display: flex;
+      gap: 10px;
+    }
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,.08);
+      border-radius: 6px;
+      padding: 8px 10px;
+      min-width: 44px;
+    }
+    .countdown-unit__num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .countdown-unit__label {
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-top: 3px;
+    }
+
+    /* ===================== NAV TABS ===================== */
+    .hub-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      position: sticky;
+      top: 58px;
+      z-index: 90;
+    }
+    .hub-nav__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hub-nav__inner::-webkit-scrollbar { display: none; }
+    .nav-tab {
+      background: none;
+      border: none;
+      padding: 14px 18px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      border-bottom: 2.5px solid transparent;
+      transition: all .15s;
+    }
+    .nav-tab:hover { color: var(--text-primary); }
+    .nav-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ===================== MAIN LAYOUT ===================== */
+    .main-layout {
+      max-width: var(--max-w);
+      margin: 28px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ===================== SECTION HEADINGS ===================== */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-head h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -.2px;
+    }
+    .section-head h2 .accent-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .see-all {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* ===================== CARDS ===================== */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    /* ===================== CALENDAR ===================== */
+    .calendar-section { margin-bottom: 28px; }
+    .calendar-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .filter-chip {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .calendar-list { display: flex; flex-direction: column; gap: 8px; }
+    .cal-item {
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .cal-item:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .cal-item__date {
+      text-align: center;
+      border-right: 1px solid var(--border);
+      padding-right: 16px;
+    }
+    .cal-item__date .month {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--accent);
+    }
+    .cal-item__date .day {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+    .cal-item__date .time {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .cal-item__info {}
+    .cal-item__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .cal-item__meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 10px;
+    }
+    .cal-item__meta span::before { content: '·'; margin-right: 8px; }
+    .cal-item__meta span:first-child::before { content: none; }
+    .cal-item__badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .badge-live { background: #DCFCE7; color: #15803D; }
+    .badge-upcoming { background: var(--accent-light); color: var(--accent); }
+    .badge-final { background: #F3F4F6; color: var(--text-muted); }
+
+    /* ===================== ENTITY PROFILES ===================== */
+    .profiles-section { margin-bottom: 28px; }
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 12px;
+      text-align: center;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+      cursor: pointer;
+    }
+    .profile-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .profile-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border: 2px solid var(--border);
+      overflow: hidden;
+    }
+    .profile-card__name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .profile-card__sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .profile-card__stat {
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    /* ===================== CONTENT FEED ===================== */
+    .feed-section { margin-bottom: 28px; }
+    .article-card {
+      display: grid;
+      grid-template-columns: 1fr 100px;
+      gap: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .1s;
+    }
+    .article-card:last-child { border-bottom: none; }
+    .article-card:hover { background: var(--bg); }
+    .article-card__tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .article-card__title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .article-card__meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .article-thumb {
+      width: 100px;
+      height: 70px;
+      background: var(--border);
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* ===================== MAP / LOCAL SECTION ===================== */
+    .local-section { margin-bottom: 28px; }
+    .local-map-placeholder {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .local-map-placeholder svg { opacity: .4; }
+    .local-map-placeholder p { font-size: 13px; }
+    .local-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .local-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color .15s;
+    }
+    .local-card:hover { border-color: var(--accent); }
+    .local-card__name {
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+    .local-card__detail {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ===================== SIDEBAR ===================== */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    /* Poll widget */
+    .poll-widget {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .poll-widget__header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .poll-widget__header h3 {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .poll-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .poll-widget__body { padding: 16px; }
+    .poll-question {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+    .poll-option {
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .poll-option input { display: none; }
+    .poll-option label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .poll-option__bar-wrap {
+      flex: 1;
+      height: 36px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      transition: border-color .15s;
+    }
+    .poll-option:hover .poll-option__bar-wrap { border-color: var(--accent); }
+    .poll-option__fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: var(--accent-light);
+      border-radius: var(--radius-sm);
+      transition: width .4s ease;
+    }
+    .poll-option__label {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      padding: 0 12px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 36px;
+    }
+    .poll-option__pct {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .poll-footer {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .poll-footer__count { font-size: 12px; color: var(--text-muted); }
+    .poll-vote-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 7px 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: background .15s;
+    }
+    .poll-vote-btn:hover { background: var(--accent-dark); }
+
+    /* Quiz teaser */
+    .quiz-teaser {
+      background: linear-gradient(135deg, var(--header-bg) 0%, #1c2030 100%);
+      border-radius: var(--radius);
+      padding: 20px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-teaser::before {
+      content: '?';
+      position: absolute;
+      right: -8px;
+      top: -16px;
+      font-size: 100px;
+      font-weight: 900;
+      color: rgba(255,255,255,.05);
+      font-family: var(--font-display);
+    }
+    .quiz-teaser__label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .quiz-teaser__q {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+    .quiz-start-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      width: 100%;
+      transition: background .15s;
+    }
+    .quiz-start-btn:hover { background: var(--accent-dark); }
+
+    /* ZIP sidebar card */
+    .zip-sidebar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .zip-sidebar h3 {
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .zip-sidebar p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .zip-sidebar .zip-input-group { width: 100%; }
+    .zip-sidebar .zip-input { flex: 1; min-width: 0; }
+
+    /* Newsletter */
+    .newsletter-cta {
+      background: var(--accent-light);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .newsletter-cta__label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .newsletter-cta h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .newsletter-cta p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .email-input-group { display: flex; flex-direction: column; gap: 8px; }
+    .email-input {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      width: 100%;
+      outline: none;
+      background: #fff;
+      transition: border-color .15s;
+    }
+    .email-input:focus { border-color: var(--accent); }
+    .subscribe-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      width: 100%;
+      transition: background .15s;
+    }
+    .subscribe-btn:hover { background: var(--accent-dark); }
+
+    /* Results widget */
+    .results-widget {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .results-widget__header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .results-widget__header h3 {
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .result-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-item:last-child { border-bottom: none; }
+    .result-team {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .result-team.home { text-align: right; }
+    .result-team.away { text-align: left; }
+    .result-score {
+      text-align: center;
+      font-weight: 800;
+      font-size: 15px;
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 4px 10px;
+      white-space: nowrap;
+    }
+    .result-score small {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    /* ===================== FOOTER ===================== */
+    .site-footer {
+      background: var(--header-bg);
+      color: rgba(255,255,255,.5);
+      padding: 32px 20px;
+      margin-top: 40px;
+      font-size: 13px;
+    }
+    .site-footer__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { transition: color .15s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-note { font-size: 12px; }
+
+    /* ===================== THEME SWITCHER (demo only) ===================== */
+    .theme-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 200;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      font-size: 12px;
+    }
+    .theme-switcher p {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .theme-btns { display: flex; gap: 6px; }
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .theme-btn:hover, .theme-btn.active { border-color: var(--accent); color: var(--accent); }
+    .theme-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .hub-hero__inner { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .local-cards { grid-template-columns: repeat(2, 1fr); }
+      .profiles-grid { grid-template-columns: repeat(3, 1fr); }
+      .header-search { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="site-logo">Mundo<span>Now</span></div>
+    <div class="header-divider"></div>
+    <div class="hub-name" id="hubNameHeader">World Cup 2026</div>
+    <div class="header-spacer"></div>
+    <div class="lang-toggle">
+      <button class="active">EN</button>
+      <button>ES</button>
+    </div>
+    <div class="header-search">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search hub…
+    </div>
+  </div>
+</header>
+
+<!-- ===== LIVE TICKER ===== -->
+<div class="ticker-bar">
+  <div class="ticker-bar__inner">
+    <div class="ticker-label" id="tickerLabel">Live</div>
+    <div class="ticker-scroll">
+      <div class="ticker-track" id="tickerTrack">
+        <!-- Items injected by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ZIP BANNER ===== -->
+<div class="zip-banner" id="zipBanner">
+  <span class="zip-banner__text"><strong>Get local coverage.</strong> Enter your ZIP code for events, results, and content near you.</span>
+  <div class="zip-input-group">
+    <input class="zip-input" type="text" placeholder="ZIP code" maxlength="5" inputmode="numeric" />
+    <button class="zip-btn">Go</button>
+  </div>
+  <button class="zip-dismiss" onclick="document.getElementById('zipBanner').style.display='none'" title="Dismiss">×</button>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hub-hero">
+  <div class="hub-hero__inner">
+    <div>
+      <p class="hub-hero__eyebrow" id="heroEyebrow">June 11 – July 19, 2026 · USA · Canada · Mexico</p>
+      <h1 class="hub-hero__title" id="heroTitle">Your home for World Cup 2026 coverage</h1>
+      <p class="hub-hero__subtitle" id="heroSubtitle">Results, schedules, team profiles, fan zones near you, and the latest stories — all in one place, in English and Spanish.</p>
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat"><div class="hero-stat__num">48</div><div class="hero-stat__label">Teams</div></div>
+        <div class="hero-stat"><div class="hero-stat__num">16</div><div class="hero-stat__label">Host Cities</div></div>
+        <div class="hero-stat"><div class="hero-stat__num">104</div><div class="hero-stat__label">Matches</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <p class="hero-card__label" id="heroCardLabel">Next Match</p>
+      <p class="next-event__title" id="nextEventTitle">Mexico vs. USA</p>
+      <p class="next-event__meta" id="nextEventMeta">SoFi Stadium · Los Angeles, CA</p>
+      <div class="countdown" id="countdown">
+        <div class="countdown-unit"><div class="countdown-unit__num" id="cd-d">14</div><div class="countdown-unit__label">Days</div></div>
+        <div class="countdown-unit"><div class="countdown-unit__num" id="cd-h">06</div><div class="countdown-unit__label">Hrs</div></div>
+        <div class="countdown-unit"><div class="countdown-unit__num" id="cd-m">42</div><div class="countdown-unit__label">Min</div></div>
+        <div class="countdown-unit"><div class="countdown-unit__num" id="cd-s">18</div><div class="countdown-unit__label">Sec</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NAV TABS ===== -->
+<nav class="hub-nav">
+  <div class="hub-nav__inner" id="navTabs">
+    <!-- tabs injected by JS -->
+  </div>
+</nav>
+
+<!-- ===== MAIN LAYOUT ===== -->
+<div class="main-layout">
+
+  <!-- ===== LEFT: MAIN CONTENT ===== -->
+  <div class="main-col">
+
+    <!-- CALENDAR -->
+    <section class="calendar-section">
+      <div class="section-head">
+        <h2><span class="accent-dot"></span><span id="calTitle">Schedule & Upcoming Matches</span></h2>
+        <a href="#" class="see-all">View full calendar →</a>
+      </div>
+      <div class="calendar-filters" id="calFilters">
+        <!-- chips injected by JS -->
+      </div>
+      <div class="calendar-list" id="calList">
+        <!-- items injected by JS -->
+      </div>
+    </section>
+
+    <!-- ENTITY PROFILES -->
+    <section class="profiles-section">
+      <div class="section-head">
+        <h2><span class="accent-dot"></span><span id="profilesTitle">Teams</span></h2>
+        <a href="#" class="see-all">All teams →</a>
+      </div>
+      <div class="profiles-grid" id="profilesGrid">
+        <!-- cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- LOCAL / GEO -->
+    <section class="local-section">
+      <div class="section-head">
+        <h2><span class="accent-dot"></span><span id="localTitle">Host Cities & Fan Zones</span></h2>
+        <a href="#" class="see-all">Explore all →</a>
+      </div>
+      <div class="local-map-placeholder">
+        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <p>Interactive map · Host locations displayed here</p>
+      </div>
+      <div class="local-cards" id="localCards">
+        <!-- cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- CONTENT FEED -->
+    <section class="feed-section">
+      <div class="section-head">
+        <h2><span class="accent-dot"></span>Latest Stories</h2>
+        <a href="#" class="see-all">More stories →</a>
+      </div>
+      <div class="card">
+        <div id="articleFeed">
+          <!-- articles injected by JS -->
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /main-col -->
+
+  <!-- ===== RIGHT: SIDEBAR ===== -->
+  <aside class="sidebar">
+
+    <!-- RESULTS -->
+    <div class="results-widget">
+      <div class="results-widget__header">
+        <h3 id="resultsTitle">Recent Results</h3>
+        <a href="#" class="see-all" style="font-size:12px;">All →</a>
+      </div>
+      <div id="resultsWidget">
+        <!-- results injected by JS -->
+      </div>
+    </div>
+
+    <!-- POLL -->
+    <div class="poll-widget">
+      <div class="poll-widget__header">
+        <h3>📊 <span id="pollTitle">Fan Poll</span></h3>
+        <span class="poll-badge">Weekly</span>
+      </div>
+      <div class="poll-widget__body">
+        <p class="poll-question" id="pollQuestion">Which team do you think will win the 2026 World Cup?</p>
+        <div id="pollOptions"></div>
+        <div class="poll-footer">
+          <span class="poll-footer__count" id="pollCount">2,847 votes</span>
+          <button class="poll-vote-btn" onclick="submitPoll()">Vote</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZIP SIDEBAR -->
+    <div class="zip-sidebar">
+      <h3 id="zipSidebarTitle">📍 Find Local Events</h3>
+      <p id="zipSidebarText">Enter your ZIP to discover fan zones, viewing parties, and local coverage near you.</p>
+      <div class="zip-input-group">
+        <input class="zip-input" type="text" placeholder="Enter ZIP" maxlength="5" inputmode="numeric" style="flex:1;min-width:0;" />
+        <button class="zip-btn">Find</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-teaser">
+      <p class="quiz-teaser__label">Quiz</p>
+      <p class="quiz-teaser__q" id="quizQuestion">How well do you know the World Cup host cities?</p>
+      <button class="quiz-start-btn" onclick="alert('Quiz opens in overlay')">Take the Quiz →</button>
+    </div>
+
+    <!-- NEWSLETTER -->
+    <div class="newsletter-cta">
+      <p class="newsletter-cta__label" id="newsletterLabel">Newsletter</p>
+      <h3 id="newsletterTitle">Stay in the loop</h3>
+      <p id="newsletterText">Get match recaps, analysis, and local fan zone updates straight to your inbox — in English or Spanish.</p>
+      <div class="email-input-group">
+        <input class="email-input" type="email" placeholder="your@email.com" />
+        <button class="subscribe-btn">Subscribe</button>
+      </div>
+    </div>
+
+  </aside>
+</div><!-- /main-layout -->
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="footer-logo">Mundo<span>Now</span></div>
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Advertise</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-note">© 2026 MundoNow. All rights reserved.</div>
+  </div>
+</footer>
+
+<!-- ===== THEME SWITCHER (demo only) ===== -->
+<div class="theme-switcher">
+  <p>Preview Hub</p>
+  <div class="theme-btns">
+    <button class="theme-btn active" onclick="setTheme('worldcup')">
+      <div class="theme-dot" style="background:#009B4D;"></div> World Cup
+    </button>
+    <button class="theme-btn" onclick="setTheme('elections')">
+      <div class="theme-dot" style="background:#1A56DB;"></div> Elections
+    </button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG — everything content-related lives here
+// Two themes: "worldcup" and "elections"
+// ============================================================
+const THEMES = {
+  worldcup: {
+    accent:       '#009B4D',
+    accentLight:  '#e6f5ed',
+    accentDark:   '#007338',
+    hubName:      'World Cup 2026',
+    heroEyebrow:  'June 11 – July 19, 2026 · USA · Canada · Mexico',
+    heroTitle:    'Your home for World Cup 2026 coverage',
+    heroSubtitle: 'Results, schedules, team profiles, fan zones near you, and the latest stories — in English and Spanish.',
+    heroStats:    [{ num: '48', label: 'Teams' }, { num: '16', label: 'Host Cities' }, { num: '104', label: 'Matches' }],
+    heroCardLabel:'Next Match',
+    nextEventTitle:'Mexico vs. USA',
+    nextEventMeta: 'SoFi Stadium · Los Angeles, CA',
+    tickerLabel:  'Live',
+    ticker: [
+      { home: 'Mexico', away: 'Argentina', score: '2 – 1', status: 'live' },
+      { home: 'Brazil',  away: 'USA',       score: '0 – 0', status: 'live' },
+      { home: 'Spain',   away: 'France',    score: '3 – 2', status: 'final' },
+      { home: 'Germany', away: 'Portugal',  score: '1 – 1', status: 'final' },
+    ],
+    calTitle:     'Schedule & Upcoming Matches',
+    calFilters:   ['All', 'Today', 'This Week', 'Group Stage', 'Knockout', 'US Cities', 'Mexico', 'Canada'],
+    calItems: [
+      { month: 'JUN', day: '15', time: '3:00 PM ET', title: 'Mexico vs. USA', meta: ['SoFi Stadium, LA', 'Group Stage'], badge: 'upcoming' },
+      { month: 'JUN', day: '16', time: '12:00 PM ET', title: 'Brazil vs. Argentina', meta: ['AT&T Stadium, Dallas', 'Group Stage'], badge: 'upcoming' },
+      { month: 'JUN', day: '17', time: '6:00 PM ET', title: 'Spain vs. Morocco', meta: ['MetLife Stadium, NJ', 'Group Stage'], badge: 'upcoming' },
+      { month: 'JUN', day: '18', time: '3:00 PM ET', title: 'England vs. Colombia', meta: ['Levi\'s Stadium, SF', 'Group Stage'], badge: 'upcoming' },
+    ],
+    profilesTitle:'Teams',
+    profiles: [
+      { flag: '🇲🇽', name: 'Mexico', sub: 'Group C', stat: 'FIFA #15' },
+      { flag: '🇧🇷', name: 'Brazil', sub: 'Group F', stat: 'FIFA #3' },
+      { flag: '🇦🇷', name: 'Argentina', sub: 'Group D', stat: 'FIFA #1' },
+      { flag: '🇺🇸', name: 'USA', sub: 'Group C', stat: 'FIFA #11' },
+      { flag: '🇪🇸', name: 'Spain', sub: 'Group A', stat: 'FIFA #7' },
+      { flag: '🇫🇷', name: 'France', sub: 'Group B', stat: 'FIFA #2' },
+    ],
+    localTitle:   'Host Cities & Fan Zones',
+    locals: [
+      { name: 'Los Angeles', detail: 'SoFi Stadium · 5 matches' },
+      { name: 'Dallas', detail: 'AT&T Stadium · 6 matches' },
+      { name: 'New York', detail: 'MetLife Stadium · 6 matches' },
+      { name: 'Miami', detail: 'Hard Rock Stadium · 5 matches' },
+      { name: 'Mexico City', detail: 'Estadio Azteca · 5 matches' },
+      { name: 'Toronto', detail: 'BMO Field · 4 matches' },
+    ],
+    resultsTitle: 'Recent Results',
+    results: [
+      { home: 'Spain', away: 'France', score: '3–2', status: 'FT' },
+      { home: 'Germany', away: 'Portugal', score: '1–1', status: 'FT' },
+      { home: 'Brazil', away: 'Mexico', score: '2–0', status: 'FT' },
+    ],
+    pollTitle:    'Fan Poll',
+    pollQuestion: 'Which team do you think will win the 2026 World Cup?',
+    pollOptions:  [
+      { label: 'Brazil', pct: 32 },
+      { label: 'Argentina', pct: 28 },
+      { label: 'France', pct: 18 },
+      { label: 'Mexico', pct: 14 },
+    ],
+    pollCount:    '3,241 votes',
+    quizQuestion: 'How well do you know the World Cup host cities?',
+    zipSidebarTitle: '📍 Find Fan Zones Near You',
+    zipSidebarText:  'Enter your ZIP to discover official fan zones, watch parties, and local coverage.',
+    newsletterLabel: 'Newsletter',
+    newsletterTitle: 'Stay in the loop',
+    newsletterText:  'Match recaps, fan zone updates, and analysis — in English or Spanish.',
+    articles: [
+      { tag: 'Analysis', title: 'How Mexico\'s roster change could shake up Group C', meta: 'By Rodrigo Vela · 2 hours ago' },
+      { tag: 'Community', title: 'The best spots to watch the World Cup in your city', meta: 'By Ana Domínguez · 4 hours ago' },
+      { tag: 'Preview', title: 'Brazil vs. Argentina: everything you need to know', meta: 'By Staff · 6 hours ago' },
+    ],
+  },
+
+  elections: {
+    accent:       '#1A56DB',
+    accentLight:  '#EEF2FF',
+    accentDark:   '#1140A6',
+    hubName:      'Midterm Elections 2026',
+    heroEyebrow:  'November 3, 2026 · All 50 States · U.S. House & Senate',
+    heroTitle:    'Your home for 2026 Midterm Elections coverage',
+    heroSubtitle: 'Candidates, districts, key races, voter resources, and the latest news — all in one place for the Latino community.',
+    heroStats:    [{ num: '435', label: 'House Races' }, { num: '33', label: 'Senate Seats' }, { num: '39', label: 'States w/ Gov Races' }],
+    heroCardLabel:'Key Date',
+    nextEventTitle:'National Election Day',
+    nextEventMeta: 'November 3, 2026 · All 50 States',
+    tickerLabel:  'Results',
+    ticker: [
+      { home: 'TX-28', away: '', score: 'Dem +4.2%', status: 'final' },
+      { home: 'AZ-Sen', away: '', score: 'Rep +1.8%', status: 'live' },
+      { home: 'FL-Gov', away: '', score: 'Rep +6.1%', status: 'final' },
+      { home: 'CA-33', away: '', score: 'Dem +12.3%', status: 'final' },
+    ],
+    calTitle:     'Primary & General Election Dates',
+    calFilters:   ['All', 'Primaries', 'General', 'Debates', 'Voter Reg Deadlines', 'Key States', 'Battlegrounds'],
+    calItems: [
+      { month: 'MAR', day: '03', time: 'All day', title: 'Texas Primary Election', meta: ['Statewide', 'Primary'], badge: 'final' },
+      { month: 'MAY', day: '19', time: 'All day', title: 'California Primary Election', meta: ['Statewide', 'Primary'], badge: 'upcoming' },
+      { month: 'AUG', day: '11', time: '8:00 PM ET', title: 'Senate Debate — Arizona', meta: ['Phoenix, AZ', 'Debate'], badge: 'upcoming' },
+      { month: 'NOV', day: '03', time: 'All day', title: 'National Election Day', meta: ['All 50 States', 'General Election'], badge: 'upcoming' },
+    ],
+    profilesTitle:'Key Candidates',
+    profiles: [
+      { flag: '🟦', name: 'Maria Reyes', sub: 'TX-28 · Democrat', stat: 'Polling +4%' },
+      { flag: '🟥', name: 'Carlos Toro', sub: 'AZ-Sen · Republican', stat: 'Polling +2%' },
+      { flag: '🟦', name: 'Diana Cruz', sub: 'FL-Gov · Democrat', stat: 'Polling -3%' },
+      { flag: '🟦', name: 'Luis Morales', sub: 'CA-33 · Democrat', stat: 'Polling +12%' },
+      { flag: '🟥', name: 'Rosa Fuentes', sub: 'NV-Sen · Republican', stat: 'Polling +1%' },
+      { flag: '🟦', name: 'Jorge Ibarra', sub: 'CO-Gov · Democrat', stat: 'Polling +5%' },
+    ],
+    localTitle:   'Key States & Districts',
+    locals: [
+      { name: 'Texas', detail: '36 districts · High Latino pop.' },
+      { name: 'Arizona', detail: 'Senate seat in play' },
+      { name: 'Florida', detail: 'Gov + Senate races' },
+      { name: 'California', detail: '52 districts · Largest delegation' },
+      { name: 'Nevada', detail: 'Senate battleground' },
+      { name: 'Colorado', detail: 'Governor\'s race' },
+    ],
+    resultsTitle: 'Latest Results',
+    results: [
+      { home: 'TX Primary', away: '', score: 'Dem +4.2%', status: 'Official' },
+      { home: 'FL Gov Race', away: '', score: 'Rep +6.1%', status: 'Official' },
+      { home: 'CA-33', away: '', score: 'Dem +12.3%', status: 'Official' },
+    ],
+    pollTitle:    'Community Poll',
+    pollQuestion: 'What is the top issue affecting your community heading into the 2026 midterms?',
+    pollOptions:  [
+      { label: 'Economy / Jobs', pct: 41 },
+      { label: 'Immigration', pct: 29 },
+      { label: 'Healthcare', pct: 19 },
+      { label: 'Education', pct: 11 },
+    ],
+    pollCount:    '4,102 votes',
+    quizQuestion: 'Do you know your voting rights? Test yourself before November.',
+    zipSidebarTitle: '📍 Find Your Local Races',
+    zipSidebarText:  'Enter your ZIP to see candidates on your ballot, polling places, and key dates near you.',
+    newsletterLabel: 'Newsletter',
+    newsletterTitle: 'Latino Electoral Pulse',
+    newsletterText:  'Weekly analysis of the races that matter most to the Latino community — in English or Spanish.',
+    articles: [
+      { tag: 'Analysis', title: 'Latino voter registration surges in Texas ahead of midterms', meta: 'By Carmen Rojas · 1 hour ago' },
+      { tag: 'Explainer', title: 'What\'s on the ballot in your state — a guide for Latino families', meta: 'By Staff · 3 hours ago' },
+      { tag: 'Profile', title: 'Meet the six Latino candidates to watch in 2026', meta: 'By Marco Vidal · 5 hours ago' },
+    ],
+  },
+};
+
+// ============================================================
+// RENDER ENGINE
+// ============================================================
+let currentTheme = 'worldcup';
+
+function setTheme(name) {
+  currentTheme = name;
+  const t = THEMES[name];
+
+  // CSS vars
+  document.documentElement.style.setProperty('--accent', t.accent);
+  document.documentElement.style.setProperty('--accent-light', t.accentLight);
+  document.documentElement.style.setProperty('--accent-dark', t.accentDark);
+
+  // Hero
+  document.getElementById('heroEyebrow').textContent = t.heroEyebrow;
+  document.getElementById('heroTitle').textContent = t.heroTitle;
+  document.getElementById('heroSubtitle').textContent = t.heroSubtitle;
+  document.getElementById('heroCardLabel').textContent = t.heroCardLabel;
+  document.getElementById('nextEventTitle').textContent = t.nextEventTitle;
+  document.getElementById('nextEventMeta').textContent = t.nextEventMeta;
+  document.getElementById('hubNameHeader').textContent = t.hubName;
+
+  // Hero stats
+  const statsEl = document.getElementById('heroStats');
+  statsEl.innerHTML = t.heroStats.map(s =>
+    `<div class="hero-stat"><div class="hero-stat__num">${s.num}</div><div class="hero-stat__label">${s.label}</div></div>`
+  ).join('');
+
+  // Ticker
+  document.getElementById('tickerLabel').textContent = t.tickerLabel;
+  const allItems = [...t.ticker, ...t.ticker]; // duplicate for infinite scroll
+  document.getElementById('tickerTrack').innerHTML = allItems.map((item, i) =>
+    `<span class="ticker-item">
+      <strong>${item.home}</strong>
+      ${item.away ? `<span class="score">${item.score}</span><strong>${item.away}</strong>` : `<span class="score">${item.score}</span>`}
+      <span class="status ${item.status}">${item.status === 'live' ? '● LIVE' : 'FT'}</span>
+    </span>${i < allItems.length - 1 ? '<span class="ticker-sep">|</span>' : ''}`
+  ).join('');
+
+  // Nav tabs
+  const tabs = name === 'worldcup'
+    ? ['Overview', 'Schedule', 'Teams', 'Results', 'Fan Zones', 'News', 'Polls & Quizzes']
+    : ['Overview', 'Calendar', 'Candidates', 'Results', 'States & Districts', 'News', 'Polls & Quizzes'];
+  document.getElementById('navTabs').innerHTML = tabs.map((tab, i) =>
+    `<button class="nav-tab${i === 0 ? ' active' : ''}" onclick="switchTab(this)">${tab}</button>`
+  ).join('');
+
+  // Calendar
+  document.getElementById('calTitle').textContent = t.calTitle;
+  document.getElementById('calFilters').innerHTML = t.calFilters.map((f, i) =>
+    `<button class="filter-chip${i === 0 ? ' active' : ''}" onclick="switchFilter(this)">${f}</button>`
+  ).join('');
+  document.getElementById('calList').innerHTML = t.calItems.map(item =>
+    `<div class="cal-item">
+      <div class="cal-item__date">
+        <div class="month">${item.month}</div>
+        <div class="day">${item.day}</div>
+        <div class="time">${item.time}</div>
+      </div>
+      <div class="cal-item__info">
+        <div class="cal-item__title">${item.title}</div>
+        <div class="cal-item__meta">${item.meta.map(m => `<span>${m}</span>`).join('')}</div>
+      </div>
+      <span class="cal-item__badge badge-${item.badge}">${item.badge === 'live' ? '🔴 LIVE' : item.badge === 'upcoming' ? 'Upcoming' : 'Final'}</span>
+    </div>`
+  ).join('');
+
+  // Profiles
+  document.getElementById('profilesTitle').textContent = t.profilesTitle;
+  document.getElementById('profilesGrid').innerHTML = t.profiles.map(p =>
+    `<div class="profile-card">
+      <div class="profile-avatar">${p.flag}</div>
+      <div class="profile-card__name">${p.name}</div>
+      <div class="profile-card__sub">${p.sub}</div>
+      <div class="profile-card__stat">${p.stat}</div>
+    </div>`
+  ).join('');
+
+  // Local
+  document.getElementById('localTitle').textContent = t.localTitle;
+  document.getElementById('localCards').innerHTML = t.locals.map(l =>
+    `<div class="local-card">
+      <div class="local-card__name">${l.name}</div>
+      <div class="local-card__detail">${l.detail}</div>
+    </div>`
+  ).join('');
+
+  // Sidebar: results
+  document.getElementById('resultsTitle').textContent = t.resultsTitle;
+  document.getElementById('resultsWidget').innerHTML = t.results.map(r =>
+    `<div class="result-item">
+      <div class="result-team home">${r.home}</div>
+      <div class="result-score">${r.score}<small>${r.status}</small></div>
+      <div class="result-team away">${r.away || ''}</div>
+    </div>`
+  ).join('');
+
+  // Poll
+  document.getElementById('pollTitle').textContent = t.pollTitle;
+  document.getElementById('pollQuestion').textContent = t.pollQuestion;
+  document.getElementById('pollCount').textContent = t.pollCount;
+  document.getElementById('pollOptions').innerHTML = t.pollOptions.map(opt =>
+    `<div class="poll-option">
+      <label>
+        <div class="poll-option__bar-wrap">
+          <div class="poll-option__fill" style="width:${opt.pct}%"></div>
+          <div class="poll-option__label">
+            <span>${opt.label}</span>
+            <span class="poll-option__pct">${opt.pct}%</span>
+          </div>
+        </div>
+      </label>
+    </div>`
+  ).join('');
+
+  // Quiz, ZIP, newsletter
+  document.getElementById('quizQuestion').textContent = t.quizQuestion;
+  document.getElementById('zipSidebarTitle').textContent = t.zipSidebarTitle;
+  document.getElementById('zipSidebarText').textContent = t.zipSidebarText;
+  document.getElementById('newsletterLabel').textContent = t.newsletterLabel;
+  document.getElementById('newsletterTitle').textContent = t.newsletterTitle;
+  document.getElementById('newsletterText').textContent = t.newsletterText;
+
+  // Articles
+  document.getElementById('articleFeed').innerHTML = t.articles.map(a =>
+    `<div class="article-card">
+      <div>
+        <div class="article-card__tag">${a.tag}</div>
+        <div class="article-card__title">${a.title}</div>
+        <div class="article-card__meta">${a.meta}</div>
+      </div>
+      <div class="article-thumb">Image</div>
+    </div>`
+  ).join('');
+
+  // Theme buttons
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toLowerCase().startsWith(name.slice(0,4)));
+  });
+}
+
+function switchTab(el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function switchFilter(el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function submitPoll() {
+  const btn = document.querySelector('.poll-vote-btn');
+  btn.textContent = 'Voted! ✓';
+  btn.style.background = '#15803D';
+  btn.disabled = true;
+}
+
+// Countdown timer (demo — counts down from now)
+function updateCountdown() {
+  const target = new Date('2026-06-15T19:00:00Z').getTime();
+  const now = Date.now();
+  const diff = Math.max(0, target - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const fmt = n => String(n).padStart(2, '0');
+  document.getElementById('cd-d').textContent = fmt(d);
+  document.getElementById('cd-h').textContent = fmt(h);
+  document.getElementById('cd-m').textContent = fmt(m);
+  document.getElementById('cd-s').textContent = fmt(s);
+}
+setInterval(updateCountdown, 1000);
+
+// Init
+setTheme('worldcup');
+updateCountdown();
+</script>
+</body>
+</html>
